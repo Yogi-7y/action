@@ -27,4 +27,3 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/heavy_plus.svg
