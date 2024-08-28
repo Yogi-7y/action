@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
+  figma_squircle: ^0.5.3
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/heavy_plus.svg
