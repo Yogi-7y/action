@@ -1,18 +1,23 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-const _backgroundColor = Color(0xff1e1e2e);
-const _blue = Color(0xff89b4fa);
-const _maroon = Color(0xffeba0ac);
-const _mauve = Color(0xffcba6f7);
-const _rosewater = Color(0xfff5e0dc);
-const _surface0 = Color(0xff313244);
-const _textColor = Color(0xffcdd6f4);
-const _subText0Color = Color(0xffa6adc8);
-const _subText1Color = Color(0xffbac2de);
-const _yellow = Color(0xfff9e2af);
+import '../../domain/entity/task.dart';
+import '../state/tasks_controller.dart';
+import '../widgets/checkbox.dart';
+
+const backgroundColor = Color(0xff1e1e2e);
+const blue = Color(0xff89b4fa);
+const maroon = Color(0xffeba0ac);
+const mauve = Color(0xffcba6f7);
+const rosewater = Color(0xfff5e0dc);
+const surface0 = Color(0xff313244);
+const textColor = Color(0xffcdd6f4);
+const subText0Color = Color(0xffa6adc8);
+const subText1Color = Color(0xffbac2de);
+const yellow = Color(0xfff9e2af);
 
 @immutable
 class Dashboard extends StatelessWidget {
@@ -23,7 +28,7 @@ class Dashboard extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
-      backgroundColor: _backgroundColor,
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.only(top: mediaQuery.padding.top),
         child: Center(
@@ -36,22 +41,15 @@ class Dashboard extends StatelessWidget {
                   'Inbox',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    color: _textColor,
+                    color: textColor,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.only(top: 12),
-                  children: const [
-                    TodoTile(isCompleted: false),
-                    SizedBox(height: 20),
-                    TodoTile(isCompleted: true),
-                  ],
-                ),
+              const Expanded(
+                child: TasksList(),
               ),
               Row(
                 children: [
@@ -60,7 +58,7 @@ class Dashboard extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 6),
                       decoration: BoxDecoration(
-                        color: _surface0,
+                        color: surface0,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -70,14 +68,14 @@ class Dashboard extends StatelessWidget {
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                              color: _surface0,
+                              color: surface0,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Center(
                               child: Text(
                                 'A',
                                 style: TextStyle(
-                                  color: _textColor,
+                                  color: textColor,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -102,7 +100,7 @@ class Dashboard extends StatelessWidget {
                         // color: _mauve,
                         // color: _yellow,
                         // color: _blue,
-                        color: _maroon,
+                        color: maroon,
                       ),
                       child: const Center(
                         child: Icon(
@@ -124,14 +122,54 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-@immutable
-class TodoTile extends StatelessWidget {
-  const TodoTile({
-    required this.isCompleted,
+class TasksList extends ConsumerWidget {
+  const TasksList({
     super.key,
   });
 
-  final bool isCompleted;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(tasksController).when(
+          data: (tasks) {
+            return _TasksList(tasks: tasks);
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, _) => Center(
+            child: Text('Error: $error'),
+          ),
+        );
+  }
+}
+
+class _TasksList extends StatelessWidget {
+  const _TasksList({required this.tasks});
+
+  final List<Task> tasks;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: tasks.length,
+      padding: const EdgeInsets.only(top: 12),
+      itemBuilder: (context, index) {
+        return const TodoTile(
+          checkboxState: CheckboxState.todo,
+        );
+      },
+    );
+  }
+}
+
+@immutable
+class TodoTile extends StatelessWidget {
+  const TodoTile({
+    required this.checkboxState,
+    super.key,
+  });
+
+  final CheckboxState checkboxState;
 
   @override
   Widget build(BuildContext context) {
@@ -140,24 +178,7 @@ class TodoTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 18,
-            height: 18,
-            margin: const EdgeInsets.only(top: 4),
-            decoration: ShapeDecoration(
-              color: isCompleted ? _rosewater : null,
-              shape: SmoothRectangleBorder(
-                side: const BorderSide(
-                  color: _rosewater,
-                  width: 1.5,
-                ),
-                borderRadius: SmoothBorderRadius(
-                  cornerRadius: 6,
-                  cornerSmoothing: 1,
-                ),
-              ),
-            ),
-          ),
+          CustomCheckbox(state: checkboxState),
           const SizedBox(width: 8),
           const Expanded(
             child: Column(
@@ -166,7 +187,7 @@ class TodoTile extends StatelessWidget {
                 Text(
                   'Call John and ask about X',
                   style: TextStyle(
-                    color: _textColor,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -179,14 +200,14 @@ class TodoTile extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.hardware_outlined,
-                          color: _rosewater,
+                          color: rosewater,
                           size: 14,
                         ),
                         SizedBox(width: 4),
                         Text(
                           'Project Name',
                           style: TextStyle(
-                            color: _subText1Color,
+                            color: subText1Color,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -198,14 +219,14 @@ class TodoTile extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.label_outline_rounded,
-                          color: _rosewater,
+                          color: rosewater,
                           size: 14,
                         ),
                         SizedBox(width: 4),
                         Text(
                           'Context',
                           style: TextStyle(
-                            color: _subText1Color,
+                            color: subText1Color,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -216,7 +237,7 @@ class TodoTile extends StatelessWidget {
                     Text(
                       '2d Ago',
                       style: TextStyle(
-                        color: _subText1Color,
+                        color: subText1Color,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
