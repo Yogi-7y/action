@@ -48,3 +48,4 @@ app.*.map.json
 .vscode/
 android/
 .nvim.lua
+dependencies_docs
