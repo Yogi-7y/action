@@ -16,7 +16,9 @@ dependencies:
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
   network_y: 0.1.1
-  notion_db_sdk: ^0.2.0
+  # notion_db_sdk: ^0.2.0
+  notion_db_sdk:
+    path: ../notion_db_sdk/
 
 dev_dependencies:
   flutter_test:

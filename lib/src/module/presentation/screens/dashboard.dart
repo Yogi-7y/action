@@ -150,12 +150,16 @@ class _TasksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: tasks.length,
       padding: const EdgeInsets.only(top: 12),
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 20);
+      },
       itemBuilder: (context, index) {
-        return const TodoTile(
+        return TodoTile(
           checkboxState: CheckboxState.todo,
+          task: tasks[index],
         );
       },
     );
@@ -166,10 +170,12 @@ class _TasksList extends StatelessWidget {
 class TodoTile extends StatelessWidget {
   const TodoTile({
     required this.checkboxState,
+    required this.task,
     super.key,
   });
 
   final CheckboxState checkboxState;
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -180,20 +186,20 @@ class TodoTile extends StatelessWidget {
         children: [
           CustomCheckbox(state: checkboxState),
           const SizedBox(width: 8),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Call John and ask about X',
-                  style: TextStyle(
+                  task.name,
+                  style: const TextStyle(
                     color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 4),
-                Row(
+                const SizedBox(height: 4),
+                const Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(

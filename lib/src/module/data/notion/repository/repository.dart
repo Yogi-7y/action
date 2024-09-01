@@ -3,6 +3,7 @@ import 'package:notion_db_sdk/notion_db_sdk.dart';
 
 import '../../../domain/entity/task.dart';
 import '../../../domain/repository/repository.dart';
+import '../models/task_model.dart';
 
 @immutable
 class NotionRepository extends TaskRepository {
@@ -15,10 +16,22 @@ class NotionRepository extends TaskRepository {
     required TaskDatabaseId id,
   }) async {
     try {
-      final _result = await client.getProperties(id);
+      final filter = CheckboxFilter(
+        'Inbox',
+        equals: false,
+      );
+
+      final _result = await client.query(
+        id,
+        filter: filter,
+      );
 
       return _result.map<List<Task>>((value) {
-        return <Task>[];
+        final tasks = value.map((e) {
+          return TaskModel.fromPropertyMap(e);
+        }).toList();
+
+        return tasks;
       });
     } catch (e) {
       print(e);
