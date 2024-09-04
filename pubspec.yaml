@@ -9,16 +9,17 @@ environment:
   sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
-  core_y: 0.2.0
+  core_y: 0.3.0
   figma_squircle: ^0.5.3
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
-  network_y: 0.1.1
+  network_y: 0.1.1+2
   # notion_db_sdk: ^0.2.0
   notion_db_sdk:
     path: ../notion_db_sdk/
+  wakelock_plus: ^1.2.8
 
 dev_dependencies:
   flutter_test:

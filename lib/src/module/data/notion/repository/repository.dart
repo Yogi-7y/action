@@ -18,12 +18,14 @@ class NotionRepository extends TaskRepository {
     try {
       final filter = CheckboxFilter(
         'Inbox',
-        equals: false,
+        equals: true,
       );
 
       final _result = await client.query(
         id,
         filter: filter,
+        forceFetchRelationPages: true,
+        cacheRelationPages: true,
       );
 
       return _result.map<List<Task>>((value) {
@@ -34,7 +36,6 @@ class NotionRepository extends TaskRepository {
         return tasks;
       });
     } catch (e) {
-      print(e);
       rethrow;
     }
   }

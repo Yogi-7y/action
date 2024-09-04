@@ -1,12 +1,38 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/dashboard.dart';
+import '../../../core/resource/colors.dart';
 
 enum CheckboxState {
-  todo,
-  inprogress,
-  completed,
+  todo(groupValues: [
+    'todo',
+    'Awaiting',
+    'Stalled',
+    'Do Next',
+  ]),
+  inProgress(groupValues: [
+    'In Progress',
+  ]),
+  completed(
+    groupValues: [
+      'Completed',
+      'Done',
+    ],
+  );
+
+  const CheckboxState({required this.groupValues});
+
+  /// All the values that fall under this state.
+  final List<String> groupValues;
+
+  static CheckboxState fromValue(String value) {
+    for (final state in CheckboxState.values) {
+      if (state.groupValues.contains(value)) {
+        return state;
+      }
+    }
+    return CheckboxState.todo;
+  }
 }
 
 @immutable
@@ -25,7 +51,7 @@ class CustomCheckbox extends StatelessWidget {
     const borderSmoothing = 1.0;
 
     final fillColor = state == CheckboxState.completed ? rosewater : null;
-    final inProgress = state == CheckboxState.inprogress;
+    final inProgress = state == CheckboxState.inProgress;
 
     return Stack(
       children: [

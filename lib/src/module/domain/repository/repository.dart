@@ -6,7 +6,8 @@ import 'package:notion_db_sdk/notion_db_sdk.dart';
 import '../../data/notion/repository/repository.dart';
 import '../entity/task.dart';
 
-typedef AsyncTasks = AsyncResult<List<Task>, AppException>;
+typedef Tasks = List<Task>;
+typedef AsyncTasks = AsyncResult<Tasks, AppException>;
 typedef TaskDatabaseId = String;
 
 @immutable
