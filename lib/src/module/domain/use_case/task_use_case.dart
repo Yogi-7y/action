@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:notion_db_sdk/notion_db_sdk.dart';
 
-import '../repository/repository.dart';
+import '../repository/task_repository.dart';
 
 @immutable
 class TaskUseCase {
@@ -11,8 +12,12 @@ class TaskUseCase {
 
   AsyncTasks fetchTasks({
     required TaskDatabaseId id,
+    Filter? filter,
   }) =>
-      repository.fetchTasks(id: id);
+      repository.fetchTasks(
+        id: id,
+        filter: filter,
+      );
 }
 
 final taskUseCase = Provider(

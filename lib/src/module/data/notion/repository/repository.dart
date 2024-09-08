@@ -1,8 +1,10 @@
+import 'package:core_y/src/exceptions/app_exception.dart';
+import 'package:core_y/src/types/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
 import '../../../domain/entity/task.dart';
-import '../../../domain/repository/repository.dart';
+import '../../../domain/repository/task_repository.dart';
 import '../models/task_model.dart';
 
 @immutable
@@ -11,18 +13,15 @@ class NotionRepository extends TaskRepository {
 
   final NotionClient client;
 
+  late final _taskDatabaseId = const String.fromEnvironment('task_database_id');
+
   @override
   AsyncTasks fetchTasks({
-    required TaskDatabaseId id,
+    Filter? filter,
   }) async {
     try {
-      final filter = CheckboxFilter(
-        'Inbox',
-        equals: true,
-      );
-
       final _result = await client.query(
-        id,
+        _taskDatabaseId,
         filter: filter,
         forceFetchRelationPages: true,
         cacheRelationPages: true,
@@ -38,5 +37,10 @@ class NotionRepository extends TaskRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  AsyncResult<void, AppException> createTask({required Task task}) {
+    throw UnimplementedError();
   }
 }

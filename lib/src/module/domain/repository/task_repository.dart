@@ -15,13 +15,18 @@ abstract class TaskRepository {
   const TaskRepository();
 
   AsyncTasks fetchTasks({
-    required TaskDatabaseId id,
+    Filter? filter,
+  });
+
+  AsyncResult<void, AppException> createTask({
+    required Task task,
   });
 }
 
 final taskRepository = Provider(
   (ref) {
     const options = NotionOptions(
+      // ignore: do_not_use_environment
       secret: String.fromEnvironment('notion_secret'),
       version: '2021-05-13',
     );

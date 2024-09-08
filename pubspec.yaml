@@ -20,6 +20,7 @@ dependencies:
   notion_db_sdk:
     path: ../notion_db_sdk/
   wakelock_plus: ^1.2.8
+  smart_textfield: ^1.0.5
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:smart_textfield/smart_textfield.dart';
+
+import '../../presentation/modals/add_action_modal.dart';
 
 @immutable
-class Project {
+class Project implements Tokenable {
   const Project({
     required this.id,
     required this.name,
@@ -9,6 +12,12 @@ class Project {
 
   final String id;
   final String name;
+
+  @override
+  String get prefix => ProjectTokenizer.projectPrefix;
+
+  @override
+  String get stringValue => name;
 
   @override
   String toString() => 'Project(id: $id, name: $name)';

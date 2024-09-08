@@ -30,7 +30,7 @@ class TodoTile extends StatelessWidget {
                   task.name,
                   style: const TextStyle(
                     color: textColor,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
