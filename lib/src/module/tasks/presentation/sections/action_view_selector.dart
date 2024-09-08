@@ -2,7 +2,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/resource/colors.dart';
+import '../../../../core/resource/colors.dart';
 import '../modals/add_action_modal.dart';
 import '../state/action_view_list_controller.dart';
 import '../state/selected_action_view_controller.dart';

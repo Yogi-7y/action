@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_textfield/smart_textfield.dart';
 
-import '../../../core/resource/colors.dart';
-import '../../../widgets/buttons/async_button.dart';
-import '../../projects/domain/entity/project.dart';
-import '../../projects/domain/repository/project_repository.dart';
+import '../../../../core/resource/colors.dart';
+import '../../../../widgets/buttons/async_button.dart';
+import '../../../projects/domain/entity/project.dart';
+import '../../../projects/domain/repository/project_repository.dart';
 import '../state/projects_controller.dart';
 
 mixin ActionViewModal {

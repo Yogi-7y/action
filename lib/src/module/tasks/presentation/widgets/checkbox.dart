@@ -1,7 +1,7 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/resource/colors.dart';
+import '../../../../core/resource/colors.dart';
 
 enum CheckboxState {
   todo(groupValues: [

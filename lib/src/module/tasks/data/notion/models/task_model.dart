@@ -1,6 +1,6 @@
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 import '../../../domain/entity/context.dart';
-import '../../../projects/domain/entity/project.dart';
+import '../../../../projects/domain/entity/project.dart';
 import '../../../domain/entity/task.dart';
 
 class TaskModel extends Task {

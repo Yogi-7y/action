@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/resource/colors.dart';
+import '../../../../core/resource/colors.dart';
 import '../sections/action_view_app_bar.dart';
 import '../sections/action_view_selector.dart';
 import '../sections/task_list.dart';

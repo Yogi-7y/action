@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/resource/colors.dart';
+import '../../../../core/resource/colors.dart';
 import '../../domain/entity/task.dart';
 import 'checkbox.dart';
 

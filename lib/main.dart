@@ -4,7 +4,7 @@ import 'package:smart_textfield/smart_textfield.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'src/core/resource/colors.dart';
-import 'src/module/presentation/screens/dashboard.dart';
+import 'src/module/tasks/presentation/screens/dashboard.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
