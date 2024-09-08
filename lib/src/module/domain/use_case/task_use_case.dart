@@ -11,11 +11,9 @@ class TaskUseCase {
   final TaskRepository repository;
 
   AsyncTasks fetchTasks({
-    required TaskDatabaseId id,
     Filter? filter,
   }) =>
       repository.fetchTasks(
-        id: id,
         filter: filter,
       );
 }
