@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:smart_textfield/smart_textfield.dart';
 
-import '../../presentation/modals/add_action_modal.dart';
+import '../../../presentation/modals/add_action_modal.dart';
 
 @immutable
 class Project implements Tokenable {

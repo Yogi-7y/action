@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/repository/project_repository.dart';
-import '../../domain/use_case/project_use_case.dart';
+import '../../projects/domain/repository/project_repository.dart';
+import '../../projects/domain/use_case/project_use_case.dart';
 
 final projectsController = AsyncNotifierProvider<ProjectsController, Projects>(
   ProjectsController.new,

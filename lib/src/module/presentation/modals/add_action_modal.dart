@@ -5,8 +5,8 @@ import 'package:smart_textfield/smart_textfield.dart';
 
 import '../../../core/resource/colors.dart';
 import '../../../widgets/buttons/async_button.dart';
-import '../../domain/entity/project.dart';
-import '../../domain/repository/project_repository.dart';
+import '../../projects/domain/entity/project.dart';
+import '../../projects/domain/repository/project_repository.dart';
 import '../state/projects_controller.dart';
 
 mixin ActionViewModal {

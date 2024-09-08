@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../presentation/widgets/checkbox.dart';
 import 'context.dart';
-import 'project.dart';
+import '../../projects/domain/entity/project.dart';
 
 @immutable
 class Task {
