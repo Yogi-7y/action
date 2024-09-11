@@ -15,6 +15,9 @@ class TodoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final project = task.project;
+    final context = task.context;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -38,43 +41,17 @@ class TodoTile extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.hardware_outlined,
-                          color: rosewater,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          task.project.name,
-                          style: const TextStyle(
-                            color: subText1Color,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+                    if (project != null)
+                      _TodoTileChip(
+                        icon: Icons.hardware_outlined,
+                        value: project.name,
+                      ),
                     const SizedBox(width: 8),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.label_outline_rounded,
-                          color: rosewater,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          task.context.name,
-                          style: const TextStyle(
-                            color: subText1Color,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+                    if (context != null)
+                      _TodoTileChip(
+                        icon: Icons.label_outline_rounded,
+                        value: context.name,
+                      ),
                     const Spacer(),
                     const Text(
                       '2d Ago',
@@ -91,6 +68,38 @@ class TodoTile extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _TodoTileChip extends StatelessWidget {
+  const _TodoTileChip({
+    required this.icon,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: rosewater,
+          size: 14,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            color: subText1Color,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

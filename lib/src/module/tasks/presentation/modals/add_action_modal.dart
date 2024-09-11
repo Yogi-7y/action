@@ -7,6 +7,8 @@ import '../../../../core/resource/colors.dart';
 import '../../../../widgets/buttons/async_button.dart';
 import '../../../projects/domain/entity/project.dart';
 import '../../../projects/domain/repository/project_repository.dart';
+import '../../domain/entity/task.dart';
+import '../../domain/use_case/task_use_case.dart';
 import '../state/projects_controller.dart';
 
 mixin ActionViewModal {
@@ -146,15 +148,27 @@ class _ActionViewModalDataStateState extends ConsumerState<_ActionViewModalDataS
           ),
           const SizedBox(height: 20),
           AsyncButton(
-            onClick: () async {
-              await Future<void>.delayed(const Duration(seconds: 2));
-            },
+            onClick: _addTask,
             text: 'Add Action',
           ),
           const SizedBox(height: 24),
         ],
       ),
     );
+  }
+
+  Future<void> _addTask() async {
+    print('Add task called');
+    final task = Task(
+      name: _smartTextFieldController.text,
+      project: project,
+    );
+
+    final taskUseCase = ref.read(taskUseCaseProvider);
+
+    final result = await taskUseCase.createTask(task: task);
+
+    print(result);
   }
 }
 
@@ -228,10 +242,9 @@ class ExtractedTokenChip extends StatelessWidget {
             child: Text(
               token.prefix,
               style: const TextStyle(
-                // color: Colors.white,
                 color: Color(0xff181825),
                 fontSize: 16,
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -261,6 +274,7 @@ class TokenableDateTime extends DateTime implements Tokenable {
   @override
   String get stringValue => 'Tomorrow';
 
+  // ignore: sort_constructors_first
   factory TokenableDateTime.fromDateTime(DateTime dateTime) {
     return TokenableDateTime(
       dateTime.year,

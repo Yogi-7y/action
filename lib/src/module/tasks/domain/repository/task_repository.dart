@@ -32,8 +32,6 @@ final taskRepository = Provider(
     );
     final _client = NotionClient(options: options);
 
-    return NotionRepository(
-      client: _client,
-    );
+    return NotionRepository(client: _client);
   },
 );

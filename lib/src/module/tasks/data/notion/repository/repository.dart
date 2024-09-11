@@ -13,7 +13,8 @@ class NotionRepository extends TaskRepository {
 
   final NotionClient client;
 
-  late final _taskDatabaseId = const String.fromEnvironment('task_database_id');
+  // ignore: avoid_field_initializers_in_const_classes, do_not_use_environment
+  final _taskDatabaseId = const String.fromEnvironment('task_database_id');
 
   @override
   AsyncTasks fetchTasks({
@@ -29,7 +30,7 @@ class NotionRepository extends TaskRepository {
 
       return _result.map<List<Task>>((value) {
         final tasks = value.map((e) {
-          return TaskModel.fromPropertyMap(e);
+          return TaskModel.fromPage(e);
         }).toList();
 
         return tasks;

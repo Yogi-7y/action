@@ -5,9 +5,9 @@ import '../../../domain/entity/project.dart';
 class ProjectModel extends Project {
   const ProjectModel({required super.id, required super.name});
 
-  factory ProjectModel.fromPropertyMap(Map<String, Property> map) {
-    final id = map['id']?.id ?? '';
-    final name = (map['Name'] as TextProperty?)?.value ?? '';
+  factory ProjectModel.fromPage(Page page) {
+    final id = page.id;
+    final name = (page.properties['Name'] as TextProperty?)?.value ?? '';
 
     return ProjectModel(id: id, name: name);
   }

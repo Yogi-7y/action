@@ -19,7 +19,7 @@ class NotionProjectRepository implements ProjectRepository {
     final response = await client.fetchAll(projectDatabaseId);
 
     return response.map<Projects>(
-      (value) => value.map(ProjectModel.fromPropertyMap).toList(),
+      (value) => value.map(ProjectModel.fromPage).toList(),
     );
   }
 }

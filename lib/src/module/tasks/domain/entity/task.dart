@@ -1,28 +1,29 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../projects/domain/entity/project.dart';
 import '../../presentation/widgets/checkbox.dart';
 import 'context.dart';
-import '../../../projects/domain/entity/project.dart';
 
 @immutable
 class Task {
   const Task({
-    required this.id,
     required this.name,
-    required this.status,
-    required this.project,
-    required this.context,
-    required this.createdAt,
+    this.id,
+    this.status,
+    this.context,
+    this.createdAt,
+    this.project,
   });
 
-  final String id;
   final String name;
-  final String status;
-  final Project project;
-  final Context context;
-  final DateTime createdAt;
+  final String? id;
+  final String? status;
+  final Project? project;
+  final Context? context;
+  final DateTime? createdAt;
 
-  CheckboxState get checkboxState => CheckboxState.fromValue(status);
+  CheckboxState get checkboxState =>
+      status == null ? CheckboxState.todo : CheckboxState.fromValue(status!);
 
   @override
   String toString() =>

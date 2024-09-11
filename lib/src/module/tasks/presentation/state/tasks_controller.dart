@@ -6,7 +6,7 @@ import '../action_view.dart';
 
 final tasksController = FutureProvider.family<List<Task>, ActionView>(
   (ref, actionView) async {
-    final _useCase = ref.read(taskUseCase);
+    final _useCase = ref.read(taskUseCaseProvider);
 
     final result = await _useCase.fetchTasks(
       filter: actionView.filter,
