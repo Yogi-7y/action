@@ -160,7 +160,7 @@ class _ActionViewModalDataStateState extends ConsumerState<_ActionViewModalDataS
   Future<void> _addTask() async {
     print('Add task called');
     final task = Task(
-      name: _smartTextFieldController.text,
+      name: _smartTextFieldController.plainText,
       project: project,
     );
 

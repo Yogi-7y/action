@@ -41,7 +41,14 @@ class NotionRepository extends TaskRepository {
   }
 
   @override
-  AsyncResult<void, AppException> createTask({required Task task}) {
-    throw UnimplementedError();
+  AsyncResult<void, AppException> createTask({
+    required Task task,
+  }) async {
+    final properties = TaskModel.fromTask(task).toProperties();
+
+    return client.createPage(
+      databaseId: _taskDatabaseId,
+      properties: properties,
+    );
   }
 }
