@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core_y/src/extensions/time_ago.dart';
 
 import '../../../../core/resource/colors.dart';
 import '../../domain/entity/task.dart';
@@ -24,7 +25,7 @@ class TodoTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCheckbox(state: task.checkboxState),
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,16 +54,16 @@ class TodoTile extends StatelessWidget {
                         value: context.name,
                       ),
                     const Spacer(),
-                    const Text(
-                      '2d Ago',
-                      style: TextStyle(
-                        color: subText1Color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    Text(
+                      task.createdAt?.timeAgo ?? '',
+                      style: const TextStyle(
+                        color: subText0Color,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

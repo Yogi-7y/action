@@ -10,9 +10,10 @@ class Task {
     required this.name,
     this.id,
     this.status,
-    this.context,
-    this.createdAt,
     this.project,
+    this.context,
+    this.dueDate,
+    this.createdAt,
   });
 
   final String name;
@@ -21,13 +22,14 @@ class Task {
   final Project? project;
   final Context? context;
   final DateTime? createdAt;
+  final DateTime? dueDate;
 
   CheckboxState get checkboxState =>
       status == null ? CheckboxState.todo : CheckboxState.fromValue(status!);
 
   @override
   String toString() =>
-      'Task(id: $id, name: $name, status: $status, project: $project, context: $context, createdAt: $createdAt)';
+      'Task(id: $id, name: $name, status: $status, project: $project, context: $context, createdAt: $createdAt, dueDate: $dueDate)';
 
   @override
   bool operator ==(Object other) =>
@@ -38,7 +40,8 @@ class Task {
           other.status == status &&
           other.project == project &&
           other.context == context &&
-          other.createdAt == createdAt);
+          other.createdAt == createdAt &&
+          other.dueDate == dueDate);
 
   @override
   int get hashCode =>
@@ -47,5 +50,6 @@ class Task {
       status.hashCode ^
       project.hashCode ^
       context.hashCode ^
-      createdAt.hashCode;
+      createdAt.hashCode ^
+      dueDate.hashCode;
 }

@@ -11,6 +11,7 @@ class TaskModel extends Task {
     super.status,
     super.project,
     super.context,
+    super.dueDate,
     super.createdAt,
   });
 
@@ -21,18 +22,21 @@ class TaskModel extends Task {
     final status = (properties['Status'] as Status?)?.value ?? '';
 
     final createdAt = (properties['Created At'] as CreatedTime?)?.value ?? DateTime.now();
+    final dueDate = (properties['Due Date'] as Date?)?.value; // New field
 
     final projectRelation = (properties['Project'] as RelationProperty?)?.value ?? [];
     final projectPage = projectRelation.isNotEmpty ? projectRelation.first : null;
     final projectProperties = projectPage?.properties ?? const <String, Property>{};
     final projectName = (projectProperties['Name'] as TextProperty?)?.value ?? '';
 
-    const contextName = 'Some context name here';
+    final contextRelation = (properties['Context'] as RelationProperty?)?.value ?? []; // New field
+    final contextPage = contextRelation.isNotEmpty ? contextRelation.first : null;
+    final contextProperties = contextPage?.properties ?? const <String, Property>{};
+    final contextName = (contextProperties['Name'] as TextProperty?)?.value ?? '';
 
-    final project =
-        projectPage == null ? null : Project(id: 'project-$projectName', name: projectName);
+    final project = projectPage == null ? null : Project(id: projectPage.id, name: projectName);
 
-    const context = Context(id: 'context-$contextName', name: contextName);
+    final context = contextPage == null ? null : Context(id: contextPage.id, name: contextName);
 
     return TaskModel(
       id: id,
@@ -41,6 +45,7 @@ class TaskModel extends Task {
       project: project,
       context: context,
       createdAt: createdAt,
+      dueDate: dueDate,
     );
   }
 
@@ -51,6 +56,7 @@ class TaskModel extends Task {
         project: task.project,
         context: task.context,
         createdAt: task.createdAt,
+        dueDate: task.dueDate,
       );
 
   List<Property> toProperties() {
@@ -84,6 +90,13 @@ class TaskModel extends Task {
       properties.add(RelationProperty(
         name: 'Context',
         valueDetails: Value(value: [contextPage]),
+      ));
+    }
+
+    if (dueDate != null) {
+      properties.add(Date(
+        name: 'Due Date',
+        valueDetails: Value(value: dueDate),
       ));
     }
 

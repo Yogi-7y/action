@@ -53,10 +53,10 @@ packages:
     dependency: "direct main"
     description:
       name: core_y
-      sha256: "6ebf736e45c2f823d1171ebe0f410ce370dbc0eb98eaf978368673ce21f85631"
+      sha256: "975129d5b6699e15213322dc447118cd482e9ec7a01e8490070260539da67c90"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.3.1"
   dbus:
     dependency: transitive
     description:
