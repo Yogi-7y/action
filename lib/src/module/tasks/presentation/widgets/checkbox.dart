@@ -2,36 +2,27 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/resource/colors.dart';
+import '../../domain/entity/task.dart';
 
 enum CheckboxState {
-  todo(groupValues: [
-    'todo',
-    'Awaiting',
-    'Stalled',
-    'Do Next',
+  todo([
+    TaskState.todo,
+    TaskState.awaiting,
+    TaskState.stalled,
+    TaskState.doNext,
   ]),
-  inProgress(groupValues: [
-    'In Progress',
-  ]),
-  completed(
-    groupValues: [
-      'Completed',
-      'Done',
-    ],
-  );
+  inProgress([TaskState.inProgress]),
+  completed([TaskState.done, TaskState.discard]);
 
-  const CheckboxState({required this.groupValues});
+  const CheckboxState(this.groupValues);
 
-  /// All the values that fall under this state.
-  final List<String> groupValues;
+  final List<TaskState> groupValues;
 
-  static CheckboxState fromValue(String value) {
-    for (final state in CheckboxState.values) {
-      if (state.groupValues.contains(value)) {
-        return state;
-      }
-    }
-    return CheckboxState.todo;
+  static CheckboxState fromTaskState(TaskState taskState) {
+    return CheckboxState.values.firstWhere(
+      (state) => state.groupValues.contains(taskState),
+      orElse: () => CheckboxState.todo,
+    );
   }
 }
 

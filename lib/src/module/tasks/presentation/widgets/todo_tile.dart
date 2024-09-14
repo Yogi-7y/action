@@ -30,13 +30,30 @@ class TodoTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  task.name,
-                  style: const TextStyle(
-                    color: textColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        task.name,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          color: textColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      task.createdAt?.timeAgo ?? '',
+                      style: const TextStyle(
+                        color: subText0Color,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -54,14 +71,6 @@ class TodoTile extends StatelessWidget {
                         value: context.name,
                       ),
                     const Spacer(),
-                    Text(
-                      task.createdAt?.timeAgo ?? '',
-                      style: const TextStyle(
-                        color: subText0Color,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
                   ],
                 ),
               ],

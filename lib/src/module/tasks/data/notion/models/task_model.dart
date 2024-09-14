@@ -8,7 +8,7 @@ class TaskModel extends Task {
   const TaskModel({
     required super.id,
     required super.name,
-    super.status,
+    super.state,
     super.project,
     super.context,
     super.dueDate,
@@ -19,7 +19,9 @@ class TaskModel extends Task {
     final id = page.id;
     final properties = page.properties;
     final name = (properties['Name'] as TextProperty?)?.value ?? '';
-    final status = (properties['Status'] as Status?)?.value ?? '';
+
+    final statusValue = (properties['Status'] as Status?)?.value ?? '';
+    final state = TaskState.fromString(statusValue);
 
     final createdAt = (properties['Created At'] as CreatedTime?)?.value ?? DateTime.now();
     final dueDate = (properties['Due Date'] as Date?)?.value; // New field
@@ -41,7 +43,7 @@ class TaskModel extends Task {
     return TaskModel(
       id: id,
       name: name,
-      status: status,
+      state: state,
       project: project,
       context: context,
       createdAt: createdAt,
@@ -52,7 +54,7 @@ class TaskModel extends Task {
   factory TaskModel.fromTask(Task task) => TaskModel(
         id: task.id,
         name: task.name,
-        status: task.status,
+        state: task.state,
         project: task.project,
         context: task.context,
         createdAt: task.createdAt,
@@ -70,10 +72,10 @@ class TaskModel extends Task {
       ));
     }
 
-    if (status?.isNotEmpty ?? false) {
+    if (state != null) {
       properties.add(Status(
         name: 'Status',
-        valueDetails: Value(value: status),
+        valueDetails: Value(value: state!.value),
       ));
     }
 

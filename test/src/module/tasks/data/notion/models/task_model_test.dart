@@ -1,8 +1,8 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:action/src/module/tasks/data/notion/models/task_model.dart';
-import 'package:action/src/module/tasks/domain/entity/task.dart';
 import 'package:action/src/module/projects/domain/entity/project.dart';
+import 'package:action/src/module/tasks/data/notion/models/task_model.dart';
 import 'package:action/src/module/tasks/domain/entity/context.dart';
+import 'package:action/src/module/tasks/domain/entity/task.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
 void main() {
@@ -44,7 +44,7 @@ void main() {
 
       expect(taskModel.id, '1');
       expect(taskModel.name, 'Test Task');
-      expect(taskModel.status, 'In Progress');
+      expect(taskModel.state, TaskState.inProgress);
       expect(taskModel.createdAt, DateTime(2024));
       expect(taskModel.dueDate, DateTime(2024, 1, 2));
       expect(taskModel.project, const Project(id: 'p1', name: 'Project 1'));
@@ -55,7 +55,7 @@ void main() {
       final task = Task(
         id: '1',
         name: 'Test Task',
-        status: 'In Progress',
+        state: TaskState.inProgress,
         project: const Project(id: 'p1', name: 'Project 1'),
         context: const Context(id: 'c1', name: 'Context 1'),
         createdAt: DateTime(2024),
@@ -66,7 +66,7 @@ void main() {
 
       expect(taskModel.id, '1');
       expect(taskModel.name, 'Test Task');
-      expect(taskModel.status, 'In Progress');
+      expect(taskModel.state, TaskState.inProgress);
       expect(taskModel.project, const Project(id: 'p1', name: 'Project 1'));
       expect(taskModel.context, const Context(id: 'c1', name: 'Context 1'));
       expect(taskModel.createdAt, DateTime(2024));
@@ -77,7 +77,7 @@ void main() {
       final taskModel = TaskModel(
         id: '1',
         name: 'Test Task',
-        status: 'In Progress',
+        state: TaskState.inProgress,
         project: const Project(id: 'p1', name: 'Project 1'),
         context: const Context(id: 'c1', name: 'Context 1'),
         createdAt: DateTime(2024),
@@ -119,7 +119,6 @@ void main() {
       const taskModel = TaskModel(
         id: '1',
         name: 'Test Task',
-        status: '',
       );
 
       final properties = taskModel.toProperties();

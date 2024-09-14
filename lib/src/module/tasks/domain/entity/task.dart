@@ -9,7 +9,7 @@ class Task {
   const Task({
     required this.name,
     this.id,
-    this.status,
+    this.state,
     this.project,
     this.context,
     this.dueDate,
@@ -18,18 +18,18 @@ class Task {
 
   final String name;
   final String? id;
-  final String? status;
+  final TaskState? state;
   final Project? project;
   final Context? context;
   final DateTime? createdAt;
   final DateTime? dueDate;
 
   CheckboxState get checkboxState =>
-      status == null ? CheckboxState.todo : CheckboxState.fromValue(status!);
+      state == null ? CheckboxState.todo : CheckboxState.fromTaskState(state!);
 
   @override
   String toString() =>
-      'Task(id: $id, name: $name, status: $status, project: $project, context: $context, createdAt: $createdAt, dueDate: $dueDate)';
+      'Task(id: $id, name: $name, state: $state, project: $project, context: $context, createdAt: $createdAt, dueDate: $dueDate)';
 
   @override
   bool operator ==(Object other) =>
@@ -37,7 +37,7 @@ class Task {
       (other is Task &&
           other.id == id &&
           other.name == name &&
-          other.status == status &&
+          other.state == state &&
           other.project == project &&
           other.context == context &&
           other.createdAt == createdAt &&
@@ -47,9 +47,30 @@ class Task {
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      status.hashCode ^
+      state.hashCode ^
       project.hashCode ^
       context.hashCode ^
       createdAt.hashCode ^
       dueDate.hashCode;
+}
+
+enum TaskState {
+  todo('To-do'),
+  awaiting('Awaiting'),
+  stalled('Stalled'),
+  doNext('Do Next'),
+  inProgress('In Progress'),
+  done('Done'),
+  discard('Discard');
+
+  const TaskState(this.value);
+
+  final String value;
+
+  static TaskState fromString(String value) {
+    return TaskState.values.firstWhere(
+      (state) => state.value == value,
+      orElse: () => TaskState.todo,
+    );
+  }
 }
