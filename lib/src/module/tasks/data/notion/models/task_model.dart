@@ -8,10 +8,10 @@ class TaskModel extends Task {
   const TaskModel({
     required super.id,
     required super.name,
-    required super.status,
-    required super.project,
-    required super.context,
-    required super.createdAt,
+    super.status,
+    super.project,
+    super.context,
+    super.createdAt,
   });
 
   factory TaskModel.fromPage(Page page) {
@@ -22,13 +22,16 @@ class TaskModel extends Task {
 
     final createdAt = (properties['Created At'] as CreatedTime?)?.value ?? DateTime.now();
 
-    final projectPage = (properties['Project'] as RelationProperty).value?.first;
+    final projectRelation = (properties['Project'] as RelationProperty?)?.value ?? [];
+    final projectPage = projectRelation.isNotEmpty ? projectRelation.first : null;
     final projectProperties = projectPage?.properties ?? const <String, Property>{};
     final projectName = (projectProperties['Name'] as TextProperty?)?.value ?? '';
 
     const contextName = 'Some context name here';
 
-    final project = Project(id: 'project-$projectName', name: projectName);
+    final project =
+        projectPage == null ? null : Project(id: 'project-$projectName', name: projectName);
+
     const context = Context(id: 'context-$contextName', name: contextName);
 
     return TaskModel(
