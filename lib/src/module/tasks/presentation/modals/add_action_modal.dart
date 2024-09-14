@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +10,6 @@ import '../../../../widgets/buttons/async_button.dart';
 import '../../../projects/domain/entity/project.dart';
 import '../../../projects/domain/repository/project_repository.dart';
 import '../../domain/entity/task.dart';
-import '../../domain/use_case/task_use_case.dart';
 import '../state/projects_controller.dart';
 import '../state/selected_action_view_controller.dart';
 import '../state/tasks_controller.dart';
@@ -169,7 +170,7 @@ class _ActionViewModalDataStateState extends ConsumerState<_ActionViewModalDataS
 
     final tasksControllerNotifier = ref.read(tasksController(selectedActionView).notifier);
 
-    await tasksControllerNotifier.addTask(task);
+    unawaited(tasksControllerNotifier.addTask(task));
 
     if (mounted) Navigator.of(context).pop();
   }
