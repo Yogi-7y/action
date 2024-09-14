@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entity/task.dart';
 import '../../domain/use_case/task_use_case.dart';
 import '../action_view.dart';
+import 'selected_action_view_controller.dart';
 
 final tasksController =
     AsyncNotifierProvider.family<TasksController, List<Task>, ActionView>(TasksController.new);
@@ -35,7 +36,9 @@ class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
 
     await result.fold(
       onSuccess: (_) async {
-        state = await AsyncValue.guard(() => _fetchTasks(actionView: arg));
+        final actionView = ref.read(selectedActionViewController);
+
+        return ref.refresh(tasksController(actionView).future);
       },
       onFailure: (error) {
         state = AsyncValue.data(state.value?.where((t) => t != task).toList() ?? []);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/repository/task_repository.dart';
+import '../action_view.dart';
 import '../state/action_view_list_controller.dart';
 import '../state/action_view_mixin.dart';
 import '../state/selected_action_view_controller.dart';
@@ -87,20 +88,41 @@ class _TasksList extends ConsumerWidget with ActionViewMixin {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return RefreshIndicator(
-      onRefresh: () async => refreshCurrentSelectedView(ref),
-      child: ListView.separated(
-        itemCount: tasks.length,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        separatorBuilder: (context, index) {
-          return const SizedBox(height: 20);
-        },
-        itemBuilder: (context, index) {
-          return TodoTile(
-            task: tasks[index],
-          );
-        },
-      ),
+    return Stack(
+      children: [
+        const _TaskLinearLoadingIndicator(),
+        RefreshIndicator(
+          onRefresh: () async => refreshCurrentSelectedView(ref),
+          child: ListView.separated(
+            itemCount: tasks.length,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 20);
+            },
+            itemBuilder: (context, index) {
+              return TodoTile(
+                task: tasks[index],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TaskLinearLoadingIndicator extends ConsumerWidget {
+  const _TaskLinearLoadingIndicator();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final actionView = ref.watch(selectedActionViewController);
+    final isLoading = ref.watch(tasksController(actionView)).isRefreshing;
+
+    if (!isLoading) return const SizedBox.shrink();
+
+    return LinearProgressIndicator(
+      value: isLoading ? null : 0,
     );
   }
 }
