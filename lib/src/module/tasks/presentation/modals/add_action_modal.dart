@@ -10,6 +10,8 @@ import '../../../projects/domain/repository/project_repository.dart';
 import '../../domain/entity/task.dart';
 import '../../domain/use_case/task_use_case.dart';
 import '../state/projects_controller.dart';
+import '../state/selected_action_view_controller.dart';
+import '../state/tasks_controller.dart';
 
 mixin ActionViewModal {
   Future<void> addNewAction({
@@ -158,17 +160,18 @@ class _ActionViewModalDataStateState extends ConsumerState<_ActionViewModalDataS
   }
 
   Future<void> _addTask() async {
-    print('Add task called');
     final task = Task(
       name: _smartTextFieldController.plainText,
       project: project,
     );
 
-    final taskUseCase = ref.read(taskUseCaseProvider);
+    final selectedActionView = ref.read(selectedActionViewController);
 
-    final result = await taskUseCase.createTask(task: task);
+    final tasksControllerNotifier = ref.read(tasksController(selectedActionView).notifier);
 
-    print(result);
+    await tasksControllerNotifier.addTask(task);
+
+    if (mounted) Navigator.of(context).pop();
   }
 }
 

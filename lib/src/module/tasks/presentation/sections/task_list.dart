@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/repository/task_repository.dart';
 import '../state/action_view_list_controller.dart';
+import '../state/action_view_mixin.dart';
 import '../state/selected_action_view_controller.dart';
 import '../state/tasks_controller.dart';
 import '../widgets/todo_tile.dart';
@@ -27,7 +28,7 @@ class _TasksListState extends ConsumerState<TasksList> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.listenManual(
-        selectedActionViewIndex,
+        selectedActionViewIndexController,
         (oldIndex, index) {
           final currentPage = pageController.page?.round();
 
@@ -46,7 +47,7 @@ class _TasksListState extends ConsumerState<TasksList> {
   }
 
   void _onPageChanged(int index) {
-    ref.read(selectedActionViewIndex.notifier).update((_) => index);
+    ref.read(selectedActionViewIndexController.notifier).update((_) => index);
   }
 
   @override
@@ -79,24 +80,27 @@ class _TasksListState extends ConsumerState<TasksList> {
   }
 }
 
-class _TasksList extends StatelessWidget {
+class _TasksList extends ConsumerWidget with ActionViewMixin {
   const _TasksList({required this.tasks});
 
   final Tasks tasks;
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: tasks.length,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      separatorBuilder: (context, index) {
-        return const SizedBox(height: 20);
-      },
-      itemBuilder: (context, index) {
-        return TodoTile(
-          task: tasks[index],
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    return RefreshIndicator(
+      onRefresh: () async => refreshCurrentSelectedView(ref),
+      child: ListView.separated(
+        itemCount: tasks.length,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 20);
+        },
+        itemBuilder: (context, index) {
+          return TodoTile(
+            task: tasks[index],
+          );
+        },
+      ),
     );
   }
 }

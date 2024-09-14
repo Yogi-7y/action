@@ -32,8 +32,9 @@ class ActionViewSelector extends ConsumerWidget with ActionViewModal {
                   return Row(
                     children: [
                       GestureDetector(
-                        onTap: () =>
-                            ref.read(selectedActionViewIndex.notifier).update((value) => index),
+                        onTap: () => ref
+                            .read(selectedActionViewIndexController.notifier)
+                            .update((value) => index),
                         child: Container(
                           height: 60,
                           width: 60,

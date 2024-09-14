@@ -49,3 +49,4 @@ app.*.map.json
 android/
 .nvim.lua
 # dependencies_docs
+.claudesync/config.local.json

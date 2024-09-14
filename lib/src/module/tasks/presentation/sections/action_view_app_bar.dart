@@ -12,7 +12,7 @@ class ActionViewAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final actionView = ref.watch(selectedActionView);
+    final actionView = ref.watch(selectedActionViewController);
     return AppBar(
       backgroundColor: backgroundColor,
       title: Text(
