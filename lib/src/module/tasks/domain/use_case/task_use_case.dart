@@ -23,6 +23,21 @@ class TaskUseCase {
     required Task task,
   }) =>
       repository.createTask(task: task);
+
+  AsyncResult<void, AppException> markTaskAsTodo(String taskId) => repository.updateTask(
+        taskId: taskId,
+        properties: [const Status(name: 'Status', valueDetails: Value(value: 'To-do'))],
+      );
+
+  AsyncResult<void, AppException> markTaskAsInProgress(String taskId) => repository.updateTask(
+        taskId: taskId,
+        properties: [const Status(name: 'Status', valueDetails: Value(value: 'In Progress'))],
+      );
+
+  AsyncResult<void, AppException> markTaskAsComplete(String taskId) => repository.updateTask(
+        taskId: taskId,
+        properties: [const Status(name: 'Status', valueDetails: Value(value: 'Done'))],
+      );
 }
 
 final taskUseCaseProvider = Provider(

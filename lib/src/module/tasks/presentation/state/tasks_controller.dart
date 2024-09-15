@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core_y/core_y.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/task.dart';
@@ -43,6 +44,33 @@ class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
       onFailure: (error) {
         state = AsyncValue.data(state.value?.where((t) => t != task).toList() ?? []);
       },
+    );
+  }
+
+  Future<void> markTaskAsTodo(String taskId) async {
+    await _updateTaskStatus(taskId, _useCase.markTaskAsTodo);
+  }
+
+  Future<void> markTaskAsInProgress(String taskId) async {
+    await _updateTaskStatus(taskId, _useCase.markTaskAsInProgress);
+  }
+
+  Future<void> markTaskAsComplete(String taskId) async {
+    await _updateTaskStatus(taskId, _useCase.markTaskAsComplete);
+  }
+
+  Future<void> _updateTaskStatus(
+    String taskId,
+    AsyncResult<void, AppException> Function(String) updateFunction,
+  ) async {
+    final result = await updateFunction(taskId);
+
+    await result.fold(
+      onSuccess: (_) async {
+        final actionView = ref.read(selectedActionViewController);
+        return ref.refresh(tasksController(actionView).future);
+      },
+      onFailure: (error) {},
     );
   }
 }

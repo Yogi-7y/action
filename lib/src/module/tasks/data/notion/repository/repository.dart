@@ -51,4 +51,17 @@ class NotionRepository extends TaskRepository {
       properties: properties,
     );
   }
+
+  @override
+  AsyncResult<void, AppException> updateTask({
+    required String taskId,
+    required List<Property<Object>> properties,
+  }) async {
+    final result = await client.updatePage(
+      pageId: taskId,
+      properties: properties,
+    );
+
+    return result;
+  }
 }

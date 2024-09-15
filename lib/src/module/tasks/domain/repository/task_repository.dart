@@ -21,6 +21,11 @@ abstract class TaskRepository {
   AsyncResult<void, AppException> createTask({
     required Task task,
   });
+
+  AsyncResult<void, AppException> updateTask({
+    required String taskId,
+    required List<Property> properties,
+  });
 }
 
 final taskRepository = Provider(
@@ -28,7 +33,7 @@ final taskRepository = Provider(
     const options = NotionOptions(
       // ignore: do_not_use_environment
       secret: String.fromEnvironment('notion_secret'),
-      version: '2021-05-13',
+      version: '2022-06-28',
     );
     final _client = NotionClient(options: options);
 
