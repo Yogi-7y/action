@@ -3,20 +3,22 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.1.0
 
 environment:
   sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
-  core_y: 0.2.0
+  core_y: ^0.3.1
   figma_squircle: ^0.5.3
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
-  network_y: 0.1.1
-  notion_db_sdk: ^0.2.0
+  network_y: 0.1.2+1
+  notion_db_sdk: 0.7.0+2
+  smart_textfield: ^1.0.5
+  wakelock_plus: ^1.2.8
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +28,7 @@ dev_dependencies:
       url: https://github.com/Yogi-7y/Project-Y
       path: packages/lints
       ref: main
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
