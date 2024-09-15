@@ -1,31 +1,40 @@
 import 'package:core_y/src/exceptions/app_exception.dart';
 import 'package:core_y/src/types/result.dart';
-import 'package:flutter/foundation.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
+import '../../../../../core/api/pagination_params.dart';
 import '../../../domain/entity/task.dart';
 import '../../../domain/repository/task_repository.dart';
 import '../models/task_model.dart';
 
-@immutable
 class NotionRepository extends TaskRepository {
-  const NotionRepository({required this.client});
+  NotionRepository({required this.client});
 
   final NotionClient client;
-
-  // ignore: avoid_field_initializers_in_const_classes, do_not_use_environment
+  // ignore: do_not_use_environment
   final _taskDatabaseId = const String.fromEnvironment('task_database_id');
 
   @override
   AsyncTasks fetchTasks({
     Filter? filter,
+    PaginationStrategyParams? paginationParams,
   }) async {
     try {
+      final cursorPaginationParams = paginationParams as CursorBasedStrategyParams?;
+
+      final notionPaginationParams = cursorPaginationParams != null
+          ? PaginationParams(
+              startCursor: cursorPaginationParams.cursor,
+              pageSize: cursorPaginationParams.limit,
+            )
+          : null;
+
       final _result = await client.query(
         _taskDatabaseId,
         filter: filter,
         forceFetchRelationPages: true,
         cacheRelationPages: true,
+        paginationParams: notionPaginationParams,
       );
 
       return _result.map<List<Task>>((value) {
@@ -63,5 +72,10 @@ class NotionRepository extends TaskRepository {
     );
 
     return result;
+  }
+
+  @override
+  AsyncTasks fetchMoreTasks() {
+    throw UnimplementedError();
   }
 }
