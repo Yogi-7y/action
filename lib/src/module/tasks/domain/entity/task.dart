@@ -27,6 +27,25 @@ class Task {
   CheckboxState get checkboxState =>
       state == null ? CheckboxState.todo : CheckboxState.fromTaskState(state!);
 
+  Task copyWith({
+    String? name,
+    String? id,
+    TaskState? state,
+    Project? project,
+    Context? context,
+    DateTime? createdAt,
+    DateTime? dueDate,
+  }) =>
+      Task(
+        name: name ?? this.name,
+        id: id ?? this.id,
+        state: state ?? this.state,
+        project: project ?? this.project,
+        context: context ?? this.context,
+        createdAt: createdAt ?? this.createdAt,
+        dueDate: dueDate ?? this.dueDate,
+      );
+
   @override
   String toString() =>
       'Task(id: $id, name: $name, state: $state, project: $project, context: $context, createdAt: $createdAt, dueDate: $dueDate)';
