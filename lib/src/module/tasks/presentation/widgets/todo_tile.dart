@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:core_y/src/extensions/time_ago.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,16 +25,8 @@ class TodoTile extends ConsumerWidget {
     final _context = task.context;
 
     return GestureDetector(
-      onTap: () async => _onTap(
-        context: context,
-        ref: ref,
-        task: task,
-      ),
-      onLongPress: () async => _onLongPress(
-        context: context,
-        ref: ref,
-        task: task,
-      ),
+      onTap: () async => _updateTaskStatus(ref: ref, isTap: true),
+      onDoubleTap: () async => _updateTaskStatus(ref: ref, isDoubleTap: true),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
@@ -96,41 +90,18 @@ class TodoTile extends ConsumerWidget {
     );
   }
 
-  Future<void> _onTap({
-    required BuildContext context,
+  void _updateTaskStatus({
     required WidgetRef ref,
-    required Task task,
-  }) async {
+    bool isTap = false,
+    bool isDoubleTap = false,
+  }) {
     final selectedActionView = ref.read(selectedActionViewController);
-    final _taskController = ref.read(tasksController(selectedActionView).notifier);
-
-    if (task.checkboxState == CheckboxState.todo) {
-      await _taskController.markTaskAsComplete(task.id!);
-      return;
-    }
-
-    if (task.checkboxState == CheckboxState.completed) {
-      await _taskController.markTaskAsTodo(task.id!);
-      return;
-    }
-  }
-
-  Future<void> _onLongPress({
-    required BuildContext context,
-    required WidgetRef ref,
-    required Task task,
-  }) async {
-    final selectedActionView = ref.read(selectedActionViewController);
-    final _taskController = ref.read(tasksController(selectedActionView).notifier);
-
-    final updatedState =
-        task.checkboxState == CheckboxState.inProgress ? TaskState.todo : TaskState.inProgress;
-
-    if (updatedState case TaskState.done) {
-      await _taskController.markTaskAsTodo(task.id!);
-    } else if (updatedState case TaskState.todo) {
-      await _taskController.markTaskAsTodo(task.id!);
-    }
+    final taskController = ref.read(tasksController(selectedActionView).notifier);
+    unawaited(taskController.updateTaskStatus(
+      task,
+      isTap: isTap,
+      isDoubleTap: isDoubleTap,
+    ));
   }
 }
 
