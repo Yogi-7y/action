@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:core_y/core_y.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/task.dart';
@@ -37,14 +38,15 @@ class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
     final result = await _useCase.createTask(task: task);
 
     await result.fold(
-      onSuccess: (_) async => _refresh(),
+      onSuccess: (_) async => refresh(),
       onFailure: (error) {
         state = AsyncValue.data(state.value?.where((t) => t != task).toList() ?? []);
       },
     );
   }
 
-  TaskState _getNextTodoState(
+  @visibleForTesting
+  TaskState getNextTodoState(
     TaskState currentState, {
     bool isTap = true,
     bool isDoubleTap = false,
@@ -84,12 +86,12 @@ class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
     final previousState = AsyncValue.data(state.value ?? []);
 
     final newTodoState =
-        _getNextTodoState(task.state ?? TaskState.todo, isTap: isTap, isDoubleTap: isDoubleTap);
+        getNextTodoState(task.state ?? TaskState.todo, isTap: isTap, isDoubleTap: isDoubleTap);
 
     final updatedTask = task.copyWith(state: newTodoState);
 
     // Optimistically update the UI
-    state = AsyncValue.data(_updateTaskInList(task.id ?? '', updatedTask));
+    state = AsyncValue.data(updateTaskInList(task.id ?? '', updatedTask));
 
     Result<void, AppException> result;
 
@@ -108,20 +110,22 @@ class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
     }
 
     await result.fold(
-      onSuccess: (_) async => _refresh(),
+      onSuccess: (_) async => refresh(),
       onFailure: (error) {
         state = previousState;
       },
     );
   }
 
-  List<Task> _updateTaskInList(
+  @visibleForTesting
+  List<Task> updateTaskInList(
     String taskId,
     Task updatedTask,
   ) =>
       state.value?.map((task) => task.id == taskId ? updatedTask : task).toList() ?? [];
 
-  Future<void> _refresh() async {
+  @visibleForTesting
+  Future<void> refresh() async {
     final actionView = ref.read(selectedActionViewController);
 
     return ref.refresh(tasksController(actionView).future);

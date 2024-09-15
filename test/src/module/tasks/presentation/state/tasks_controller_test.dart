@@ -139,4 +139,110 @@ void main() {
     // Verify that createTask was called once
     verify(() => mockTaskUseCase.createTask(task: any(named: 'task'))).called(1);
   });
+
+  group('updaeTaskStatus', () {
+    test('updates task state and refreshes on success', () async {
+      const task = Task(id: '1', name: 'Test Task', state: TaskState.todo);
+      when(() => mockTaskUseCase.markTaskAsComplete(any()))
+          .thenAnswer((_) async => const Success(null));
+      when(() => mockTaskUseCase.fetchTasks(filter: any(named: 'filter')))
+          .thenAnswer((_) async => Success([task.copyWith(state: TaskState.done)]));
+
+      final controller = container.read(tasksController(mockActionView).notifier);
+      await controller.updateTaskStatus(task);
+
+      expect(container.read(tasksController(mockActionView)).value?.first.state, TaskState.done);
+      verify(() => mockTaskUseCase.markTaskAsComplete(any())).called(1);
+
+      /// Called first during the build method and next after update
+      verify(() => mockTaskUseCase.fetchTasks(filter: any(named: 'filter'))).called(2);
+    });
+
+    test('updateTaskStatus rolls back on failure', () async {
+      const task = Task(id: '1', name: 'Test Task', state: TaskState.todo);
+
+      when(() => mockTaskUseCase.fetchTasks(filter: any(named: 'filter')))
+          .thenAnswer((_) async => const Success([task]));
+      when(() => mockTaskUseCase.markTaskAsComplete(any())).thenAnswer((_) async =>
+          const Failure(AppException(exception: 'Error', stackTrace: StackTrace.empty)));
+
+      final controller = container.read(tasksController(mockActionView).notifier);
+      final state = await container.read(tasksController(mockActionView).future);
+      expect(state.first.state, TaskState.todo);
+
+      final updateTaskFuture = controller.updateTaskStatus(task);
+      expect(container.read(tasksController(mockActionView)).value?.first.state, TaskState.done);
+
+      await updateTaskFuture;
+
+      expect(container.read(tasksController(mockActionView)).value?.first.state, TaskState.todo);
+
+      verify(() => mockTaskUseCase.markTaskAsComplete(any())).called(1);
+    });
+  });
+
+  group('getNextTodoState', () {
+    test('returns correct state for tap', () {
+      final controller = container.read(tasksController(mockActionView).notifier);
+
+      expect(controller.getNextTodoState(TaskState.todo), TaskState.done);
+      expect(controller.getNextTodoState(TaskState.done), TaskState.todo);
+      expect(controller.getNextTodoState(TaskState.inProgress), TaskState.done);
+    });
+
+    test('getNextTodoState returns correct state for double tap', () {
+      final controller = container.read(tasksController(mockActionView).notifier);
+
+      expect(
+        controller.getNextTodoState(
+          TaskState.todo,
+          isDoubleTap: true,
+          isTap: false,
+        ),
+        TaskState.inProgress,
+      );
+      expect(
+        controller.getNextTodoState(
+          TaskState.inProgress,
+          isDoubleTap: true,
+          isTap: false,
+        ),
+        TaskState.todo,
+      );
+      expect(
+        controller.getNextTodoState(
+          TaskState.done,
+          isDoubleTap: true,
+          isTap: false,
+        ),
+        TaskState.todo,
+      );
+    });
+  });
+
+  group('updateTaskInList', () {
+    test('correctly updates task in list in memory', () async {
+      const tasks = [
+        Task(id: '1', name: 'Task 1'),
+        Task(id: '2', name: 'Task 2'),
+        Task(id: '3', name: 'Task 3'),
+      ];
+
+      when(() => mockTaskUseCase.fetchTasks(filter: any(named: 'filter')))
+          .thenAnswer((_) async => const Success(tasks));
+
+      final controller = container.read(tasksController(mockActionView).notifier);
+      final state = await container.read(tasksController(mockActionView).future);
+
+      expect(state, tasks);
+
+      const updatedTask = Task(id: '2', name: 'Updated Task 2');
+      final result = controller.updateTaskInList('2', updatedTask);
+
+      expect(result.length, 3);
+      expect(result[1], updatedTask);
+      expect(result[0].id, '1');
+      expect(result[2].id, '3');
+    });
+  });
 }
