@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
@@ -7,7 +8,8 @@ final actionViewList = Provider(
   (ref) => [
     TaskView(
       title: 'Inbox',
-      selectorText: 'I',
+      selectorText: 'IBX',
+      icon: Icons.move_to_inbox_rounded,
       filter: CheckboxFilter(
         'Inbox',
         equals: true,
@@ -15,7 +17,8 @@ final actionViewList = Provider(
     ),
     TaskView(
       title: 'Cold',
-      selectorText: 'C',
+      selectorText: 'CLD',
+      icon: Icons.ac_unit_rounded,
       filter: CheckboxFilter(
         'Cold',
         equals: true,

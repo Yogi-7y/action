@@ -7,11 +7,13 @@ abstract class ActionView {
     required this.title,
     required this.selectorText,
     this.filter,
+    this.icon,
   });
 
   final String title;
   final String selectorText;
   final Filter? filter;
+  final IconData? icon;
 }
 
 @immutable
@@ -20,5 +22,6 @@ class TaskView extends ActionView {
     required super.title,
     required super.selectorText,
     super.filter,
+    super.icon,
   });
 }
