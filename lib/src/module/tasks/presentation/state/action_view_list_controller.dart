@@ -24,5 +24,10 @@ final actionViewList = Provider(
         equals: true,
       ),
     ),
+    const TaskView(
+      title: 'All',
+      selectorText: 'ALL',
+      icon: Icons.apps_rounded,
+    ),
   ],
 );

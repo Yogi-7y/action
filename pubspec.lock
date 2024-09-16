@@ -189,7 +189,7 @@ packages:
     description:
       path: "packages/lints"
       ref: main
-      resolved-ref: "30e30227cb046ba8e60b5836023dd1e6f1826c66"
+      resolved-ref: ac647ff83bf98b25fd9e6d08b86a16ea63f026ab
       url: "https://github.com/Yogi-7y/Project-Y"
     source: git
     version: "0.0.1"
@@ -229,18 +229,18 @@ packages:
     dependency: "direct main"
     description:
       name: network_y
-      sha256: "9a3ddab420bb38e9a038a705e02eb36f43b3014ef3fe2585cc79751d12073223"
+      sha256: "9a742f27558f62e275cfcd6f93aa982099d393a36bcb8ccae44884da4b2c2a49"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.2+1"
+    version: "0.1.4"
   notion_db_sdk:
     dependency: "direct main"
     description:
       name: notion_db_sdk
-      sha256: "86ea8a1db6e7a97ec5c1d2d2a1f4d683de0fa08552de2ef3289a4425653530f1"
+      sha256: bb47125ef4938d447e87a97a194188740d22128a90eeda80209b5a8c2cbf2abe
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0+2"
+    version: "0.7.1"
   package_info_plus:
     dependency: transitive
     description:

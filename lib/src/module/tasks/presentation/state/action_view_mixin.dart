@@ -8,4 +8,11 @@ mixin ActionViewMixin {
     final selectedActionView = ref.watch(selectedActionViewController);
     return ref.refresh(tasksController(selectedActionView).future);
   }
+
+  TasksController getTaskController({
+    required WidgetRef ref,
+  }) {
+    final selectedActionView = ref.watch(selectedActionViewController);
+    return ref.read(tasksController(selectedActionView).notifier);
+  }
 }

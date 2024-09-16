@@ -1,6 +1,7 @@
 import 'package:core_y/core_y.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:network_y/src/pagination/pagination_params.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
 import '../entity/task.dart';
@@ -14,9 +15,11 @@ class TaskUseCase {
 
   AsyncTasks fetchTasks({
     Filter? filter,
+    PaginationStrategyParams? paginationParams,
   }) =>
       repository.fetchTasks(
         filter: filter,
+        paginationParams: paginationParams,
       );
 
   AsyncResult<void, AppException> createTask({
