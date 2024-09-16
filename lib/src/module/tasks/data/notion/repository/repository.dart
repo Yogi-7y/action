@@ -1,8 +1,8 @@
+import 'package:network_y/src/pagination/pagination_params.dart';
 import 'package:core_y/src/exceptions/app_exception.dart';
 import 'package:core_y/src/types/result.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
-import '../../../../../core/api/pagination_params.dart';
 import '../../../domain/entity/task.dart';
 import '../../../domain/repository/task_repository.dart';
 import '../models/task_model.dart';
@@ -20,16 +20,16 @@ class NotionRepository extends TaskRepository {
     PaginationStrategyParams? paginationParams,
   }) async {
     try {
-      final cursorPaginationParams = paginationParams as CursorBasedStrategyParams?;
+      final cursorPaginationParams = paginationParams as CursorPaginationStrategyParams?;
 
       final notionPaginationParams = cursorPaginationParams != null
-          ? PaginationParams(
-              startCursor: cursorPaginationParams.cursor,
-              pageSize: cursorPaginationParams.limit,
+          ? CursorPaginationStrategyParams(
+              cursor: cursorPaginationParams.cursor,
+              limit: cursorPaginationParams.limit,
             )
           : null;
 
-      final _result = await client.query(
+      final result = await client.query(
         _taskDatabaseId,
         filter: filter,
         forceFetchRelationPages: true,
@@ -37,12 +37,16 @@ class NotionRepository extends TaskRepository {
         paginationParams: notionPaginationParams,
       );
 
-      return _result.map<List<Task>>((value) {
-        final tasks = value.map((e) {
-          return TaskModel.fromPage(e);
-        }).toList();
+      return result.map((paginatedResult) {
+        final pages = paginatedResult.results;
 
-        return tasks;
+        final tasks = pages.map(TaskModel.fromPage).toList();
+
+        return PaginatedResponse(
+          results: tasks,
+          paginationParams: paginatedResult.paginationParams,
+          hasMore: paginatedResult.hasMore,
+        );
       });
     } catch (e) {
       rethrow;

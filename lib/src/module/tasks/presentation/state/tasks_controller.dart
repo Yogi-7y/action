@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:core_y/core_y.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:network_y/src/pagination/pagination_params.dart';
 
 import '../../domain/entity/task.dart';
+import '../../domain/repository/task_repository.dart';
 import '../../domain/use_case/task_use_case.dart';
 import '../action_view.dart';
 import '../widgets/checkbox.dart';
@@ -16,19 +18,52 @@ final tasksController =
 class TasksController extends FamilyAsyncNotifier<List<Task>, ActionView> {
   late final _useCase = ref.read(taskUseCaseProvider);
 
+  bool hasMore = true;
+  PaginationStrategyParams? paginationParams;
+
   @override
-  FutureOr<List<Task>> build(ActionView arg) async {
-    final result = await _fetchTasks(actionView: arg);
+  FutureOr<Tasks> build(ActionView arg) async {
+    final result = await _loadInitial(actionView: arg);
 
     return result;
   }
 
-  Future<List<Task>> _fetchTasks({required ActionView actionView}) async {
+  Future<Tasks> _loadInitial({required ActionView actionView}) async {
     final result = await _useCase.fetchTasks(
       filter: actionView.filter,
+      paginationParams: const CursorPaginationStrategyParams(limit: 50),
     );
 
-    return result.valueOrNull ?? [];
+    return result.fold(
+      onSuccess: (paginatedResponse) {
+        paginationParams = paginatedResponse.paginationParams;
+        hasMore = paginatedResponse.hasMore;
+
+        return paginatedResponse.results;
+      },
+      onFailure: (error) => throw error,
+    );
+  }
+
+  Future<void> loadMore() async {
+    if (!hasMore || paginationParams == null) return;
+
+    final result = await _useCase.fetchTasks(
+      filter: ref.read(selectedActionViewController).filter,
+      paginationParams: paginationParams,
+    );
+
+    result.fold(
+      onSuccess: (paginatedResponse) {
+        final newTasks = paginatedResponse.results;
+
+        state = AsyncValue.data([...state.value ?? [], ...newTasks]);
+
+        paginationParams = paginatedResponse.paginationParams;
+        hasMore = paginatedResponse.hasMore;
+      },
+      onFailure: (error) => throw error,
+    );
   }
 
   Future<void> addTask(Task task) async {

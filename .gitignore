@@ -46,7 +46,6 @@ app.*.map.json
 .fvm/
 .claudeignore
 .vscode/
-android/
 .nvim.lua
 # dependencies_docs
 .claudesync/config.local.json

@@ -1,13 +1,13 @@
 import 'package:core_y/core_y.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:network_y/src/pagination/pagination_params.dart';
 import 'package:notion_db_sdk/notion_db_sdk.dart';
 
-import '../../../../core/api/pagination_params.dart';
 import '../../data/notion/repository/repository.dart';
 import '../entity/task.dart';
 
 typedef Tasks = List<Task>;
-typedef AsyncTasks = AsyncResult<Tasks, AppException>;
+typedef AsyncTasks = AsyncResult<PaginatedResponse<Task>, AppException>;
 typedef TaskDatabaseId = String;
 
 abstract class TaskRepository {

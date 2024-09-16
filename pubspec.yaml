@@ -15,8 +15,10 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.5.1
   flutter_svg: ^2.0.10+1
-  network_y: 0.1.2+1
-  notion_db_sdk: 0.7.0+2
+  network_y: 0.1.4
+  # notion_db_sdk: 0.7.1
+  notion_db_sdk:
+    path: ../notion_db_sdk/
   smart_textfield: ^1.0.5
   wakelock_plus: ^1.2.8
 
