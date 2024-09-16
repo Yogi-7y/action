@@ -22,7 +22,6 @@ class TasksList extends ConsumerStatefulWidget {
 
 class _TasksListState extends ConsumerState<TasksList> {
   late final pageController = PageController();
-  late final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -96,7 +95,6 @@ class _TasksListData extends ConsumerStatefulWidget {
 }
 
 class _TasksListDataState extends ConsumerState<_TasksListData> with ActionViewMixin {
-  late final pageController = PageController();
   late final scrollController = ScrollController();
 
   @override
@@ -106,6 +104,12 @@ class _TasksListDataState extends ConsumerState<_TasksListData> with ActionViewM
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.addListener(_handlePagination);
     });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   void _handlePagination() {
