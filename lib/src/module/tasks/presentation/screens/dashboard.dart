@@ -22,6 +22,7 @@ class Dashboard extends StatelessWidget {
               child: TasksList(),
             ),
             ActionViewSelector(),
+            SizedBox(height: 8),
           ],
         ),
       ),
