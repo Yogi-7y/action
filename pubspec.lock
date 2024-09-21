@@ -236,10 +236,11 @@ packages:
   notion_db_sdk:
     dependency: "direct main"
     description:
-      path: "../notion_db_sdk"
-      relative: true
-    source: path
-    version: "0.7.1"
+      name: notion_db_sdk
+      sha256: "98a374e1ee39fdc0fe7bd5f653b392528e287388ef8a0239f2896a1cda82c861"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.2"
   package_info_plus:
     dependency: transitive
     description:
