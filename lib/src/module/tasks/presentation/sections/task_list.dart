@@ -38,18 +38,12 @@ class _TasksListState extends ConsumerState<TasksList> {
 
   void _syncPageController() => ref.listenManual(
         selectedActionViewIndexController,
-        (oldIndex, index) {
+        (oldIndex, index) async {
           final currentPage = pageController.page?.round();
 
           if (currentPage == index) return;
 
-          unawaited(
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            ),
-          );
+          pageController.jumpToPage(index);
         },
       );
 
