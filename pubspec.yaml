@@ -29,6 +29,13 @@ dev_dependencies:
       path: packages/lints
       ref: main
   mocktail: ^1.0.4
-
+  # flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons:
+    git:
+      url: https://github.com/fluttercommunity/flutter_launcher_icons
+      ref: master
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/launcher_icon/
