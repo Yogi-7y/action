@@ -24,45 +24,48 @@ class ActionViewSelector extends ConsumerWidget with ActionViewModal {
               color: surface0,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
-              children: List.generate(
-                actionViews.length,
-                (index) {
-                  final actionView = actionViews[index];
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => ref
-                            .read(selectedActionViewIndexController.notifier)
-                            .update((value) => index),
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: surface0,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: actionView.icon != null
-                                ? Icon(
-                                    actionView.icon,
-                                    size: 28,
-                                    color: textColor,
-                                  )
-                                : Text(
-                                    actionView.title,
-                                    style: const TextStyle(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  actionViews.length,
+                  (index) {
+                    final actionView = actionViews[index];
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => ref
+                              .read(selectedActionViewIndexController.notifier)
+                              .update((value) => index),
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: surface0,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: actionView.icon != null
+                                  ? Icon(
+                                      actionView.icon,
+                                      size: 28,
                                       color: textColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
+                                    )
+                                  : Text(
+                                      actionView.title,
+                                      style: const TextStyle(
+                                        color: textColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
