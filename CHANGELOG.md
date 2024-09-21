@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Initial views. ([#3](https://github.com/Yogi-7y/action/pull/3))
+
 ## 0.2.0
 
 - Pagination support. ([#2](https://github.com/Yogi-7y/action/pull/2))
