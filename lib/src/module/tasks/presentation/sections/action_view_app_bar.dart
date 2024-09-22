@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/resource/colors.dart';
-import '../state/selected_action_view_controller.dart';
+import '../state/selected_action_view_provider.dart';
 
 @immutable
 class ActionViewAppBar extends ConsumerWidget implements PreferredSizeWidget {

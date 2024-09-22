@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'selected_action_view_controller.dart';
-import 'tasks_controller.dart';
+import 'selected_action_view_provider.dart';
+import 'tasks_provider.dart';
 
 mixin ActionViewMixin {
   Future<void> refreshCurrentSelectedView(WidgetRef ref) async {

@@ -2,7 +2,7 @@ import 'package:action/src/module/tasks/domain/entity/task.dart';
 import 'package:action/src/module/tasks/domain/repository/task_repository.dart';
 import 'package:action/src/module/tasks/domain/use_case/task_use_case.dart';
 import 'package:action/src/module/tasks/presentation/action_view.dart';
-import 'package:action/src/module/tasks/presentation/state/tasks_controller.dart';
+import 'package:action/src/module/tasks/presentation/state/tasks_provider.dart';
 import 'package:core_y/core_y.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

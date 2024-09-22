@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/resource/colors.dart';
 import '../action_view.dart';
 import '../modals/add_action_modal.dart';
-import '../state/action_view_list_controller.dart';
-import '../state/selected_action_view_controller.dart';
+import '../state/action_view_list_provider.dart';
+import '../state/selected_action_view_provider.dart';
 
 class ActionViewSelector extends ConsumerStatefulWidget {
   const ActionViewSelector({super.key});
@@ -57,7 +57,7 @@ class _ActionViewSelectorState extends ConsumerState<ActionViewSelector> with Ac
   }
 
   void _initializeItemKeys() {
-    final actionViews = ref.read(actionViewList);
+    final actionViews = ref.read(actionViewListProvider);
     _selectorItemKeys
       ..clear()
       ..addAll(List.generate(actionViews.length, (_) => GlobalKey()));
@@ -65,7 +65,7 @@ class _ActionViewSelectorState extends ConsumerState<ActionViewSelector> with Ac
 
   @override
   Widget build(BuildContext context) {
-    final actionViews = ref.watch(actionViewList);
+    final actionViews = ref.watch(actionViewListProvider);
 
     return Row(
       children: [

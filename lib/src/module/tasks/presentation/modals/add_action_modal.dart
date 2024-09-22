@@ -10,9 +10,9 @@ import '../../../../widgets/buttons/async_button.dart';
 import '../../../projects/domain/entity/project.dart';
 import '../../../projects/domain/repository/project_repository.dart';
 import '../../domain/entity/task.dart';
-import '../state/projects_controller.dart';
-import '../state/selected_action_view_controller.dart';
-import '../state/tasks_controller.dart';
+import '../state/projects_provider.dart';
+import '../state/selected_action_view_provider.dart';
+import '../state/tasks_provider.dart';
 
 mixin ActionViewModal {
   Future<void> addNewAction({

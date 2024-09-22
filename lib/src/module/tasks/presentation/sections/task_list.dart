@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/resource/colors.dart';
 import '../../domain/repository/task_repository.dart';
-import '../state/action_view_list_controller.dart';
+import '../state/action_view_list_provider.dart';
 import '../state/action_view_mixin.dart';
-import '../state/selected_action_view_controller.dart';
-import '../state/tasks_controller.dart';
+import '../state/selected_action_view_provider.dart';
+import '../state/tasks_provider.dart';
 import '../widgets/todo_tile.dart';
 
 class TasksList extends ConsumerStatefulWidget {
@@ -55,7 +55,7 @@ class _TasksListState extends ConsumerState<TasksList> {
 
   @override
   Widget build(BuildContext context) {
-    final actionViews = ref.watch(actionViewList);
+    final actionViews = ref.watch(actionViewListProvider);
 
     return PageView.builder(
       controller: pageController,
